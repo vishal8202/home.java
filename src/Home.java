@@ -1,6 +1,4 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.util.Scanner;
 
 public class Home {
@@ -46,9 +44,58 @@ public class Home {
                     break;
                 case 2:
                     System.out.println("View all the values in the database");
+                    try{
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/home_db","root","");
+                        String sql = "SELECT `temp`, `humidity`, `moisture`, `date`, `sensor_values` FROM `home_automation` ";
+                        Statement stmt = con.createStatement();
+                        ResultSet rs = stmt.executeQuery(sql);
+                        while(rs.next()){
+                            temp = rs.getInt("temp");
+                            hum = rs.getInt("humidity");
+                            moist = rs.getString("moisture");
+                            String date = rs.getString("date");
+                            sensor = rs.getInt("sensor_values");
+                            System.out.println("Temperature = "+temp);
+                            System.out.println("Humidity ="+hum);
+                            System.out.println("Moisture = "+moist);
+                            System.out.println("Date ="+date);
+                            System.out.println("Sensor values = "+sensor+'\n');
+
+                        }
+                    }
+                    catch (Exception e){
+                        System.out.println(e);
+                    }
                     break;
                 case 3:
                     System.out.println("Search the details of the particular date ");
+                    System.out.println("Enter the date");
+                    String date = sc.nextLine();
+                    try{
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/home_db","root","");
+                        String sql = "SELECT `temp`, `humidity`, `moisture`, `date`, `sensor_values` FROM `home_automation` WHERE `date`='"+date+"' ";
+                        Statement stmt = con.createStatement();
+                        ResultSet rs = stmt.executeQuery(sql);
+                        while(rs.next()){
+                            temp = rs.getInt("temp");
+                            hum = rs.getInt("humidity");
+                            moist = rs.getString("moisture");
+                            date = rs.getString("date");
+                            sensor = rs.getInt("sensor_values");
+                            System.out.println("Temperature = "+temp);
+                            System.out.println("Humidity ="+hum);
+                            System.out.println("Moisture = "+moist);
+                            System.out.println("Date ="+date);
+                            System.out.println("Sensor values = "+sensor+'\n');
+
+                        }
+
+                    }
+                    catch ( Exception e){
+                        System.out.println(e);
+                    }
                     break;
                 case 4:
                     System.exit(0);
